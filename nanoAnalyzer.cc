@@ -51,8 +51,8 @@ void nanoAnalyzer()
   std::vector<float> vMu_Pt;
   std::vector<float> vMu_Eta;
   std::vector<int> vMu_Charge;
-  std::vector<float> vMu_Id;
-  std::vector<bool> vMu_Phi;
+  std::vector<bool> vMu_Id;
+  std::vector<float> vMu_Phi;
   std::vector<float> vMu_M;
 
   unsigned int nElectron;
@@ -134,6 +134,7 @@ void nanoAnalyzer()
     vMu_Eta.clear();
     vMu_Charge.clear();
     vMu_Id.clear();
+    vMu_Phi.clear();
     vMu_M.clear();
 
     vElectron_Pt.clear();
@@ -190,12 +191,11 @@ void nanoAnalyzer()
         Mu1.SetPtEtaPhiM(vMu_Pt[0], vMu_Eta[0], vMu_Phi[0], vMu_M[0]);
         Mu2.SetPtEtaPhiM(vMu_Pt[i], vMu_Eta[i], vMu_Phi[i], vMu_M[i]);
         Charge = true;
-        continue;
+        break;
       }
     }
     if(!Charge) continue;
-
-    Dilep = Mu1+Mu2;
+    Dilep = Mu1 + Mu2;
 
     Event_No = 1;
 
