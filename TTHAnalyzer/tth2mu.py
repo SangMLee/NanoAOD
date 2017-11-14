@@ -9,6 +9,12 @@ Cat1 = ROOT.TTree("Cat1", "Cat1")
 Cat2 = ROOT.TTree("Cat2", "Cat2")
 Cat3 = ROOT.TTree("Cat3", "Cat3")
 Cat4 = ROOT.TTree("Cat4", "Cat4")
+Cat5 = ROOT.TTree("Cat5", "Cat5")
+Cat6 = ROOT.TTree("Cat6", "Cat6")
+Cat7 = ROOT.TTree("Cat7", "Cat7")
+Cat8 = ROOT.TTree("Cat8", "Cat8")
+Cat9 = ROOT.TTree("Cat9", "Cat9")
+Cat10 = ROOT.TTree("Cat10", "Cat10")
 
 ### Variables ###
 Dilep = ROOT.TLorentzVector()
@@ -33,6 +39,7 @@ Nu_Mu = array("i",[0])
 Nu_El = array("i",[0])
 Nu_Jet = array("i",[0])
 Nu_BJet = array("i",[0])
+Nu_NonBJet = array("i",[0])
 
 ### Branches ###
 ALL.Branch("Event_No", Event_No, "Event_No/I")
@@ -110,17 +117,108 @@ Cat4.Branch("Jet_Pt", Jet_Pt)
 Cat4.Branch("Jet_Eta", Jet_Eta)
 Cat4.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 
+Cat5.Branch("Event_No", Event_No, "Event_No/I")
+Cat5.Branch("Dilep", "TLorentzVector", Dilep)
+Cat5.Branch("Mu1", "TLorentzVector", Mu1)
+Cat5.Branch("Mu2", "TLorentzVector", Mu2)
+Cat5.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat5.Branch("Mu_Pt", Mu_Pt)
+Cat5.Branch("Mu_Eta", Mu_Eta)
+Cat5.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat5.Branch("El_Pt", El_Pt)
+Cat5.Branch("El_Eta", El_Eta)
+Cat5.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat5.Branch("Jet_Pt", Jet_Pt)
+Cat5.Branch("Jet_Eta", Jet_Eta)
+Cat5.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
+Cat6.Branch("Event_No", Event_No, "Event_No/I")
+Cat6.Branch("Dilep", "TLorentzVector", Dilep)
+Cat6.Branch("Mu1", "TLorentzVector", Mu1)
+Cat6.Branch("Mu2", "TLorentzVector", Mu2)
+Cat6.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat6.Branch("Mu_Pt", Mu_Pt)
+Cat6.Branch("Mu_Eta", Mu_Eta)
+Cat6.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat6.Branch("El_Pt", El_Pt)
+Cat6.Branch("El_Eta", El_Eta)
+Cat6.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat6.Branch("Jet_Pt", Jet_Pt)
+Cat6.Branch("Jet_Eta", Jet_Eta)
+Cat6.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
+Cat7.Branch("Event_No", Event_No, "Event_No/I")
+Cat7.Branch("Dilep", "TLorentzVector", Dilep)
+Cat7.Branch("Mu1", "TLorentzVector", Mu1)
+Cat7.Branch("Mu2", "TLorentzVector", Mu2)
+Cat7.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat7.Branch("Mu_Pt", Mu_Pt)
+Cat7.Branch("Mu_Eta", Mu_Eta)
+Cat7.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat7.Branch("El_Pt", El_Pt)
+Cat7.Branch("El_Eta", El_Eta)
+Cat7.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat7.Branch("Jet_Pt", Jet_Pt)
+Cat7.Branch("Jet_Eta", Jet_Eta)
+Cat7.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
+Cat8.Branch("Event_No", Event_No, "Event_No/I")
+Cat8.Branch("Dilep", "TLorentzVector", Dilep)
+Cat8.Branch("Mu1", "TLorentzVector", Mu1)
+Cat8.Branch("Mu2", "TLorentzVector", Mu2)
+Cat8.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat8.Branch("Mu_Pt", Mu_Pt)
+Cat8.Branch("Mu_Eta", Mu_Eta)
+Cat8.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat8.Branch("El_Pt", El_Pt)
+Cat8.Branch("El_Eta", El_Eta)
+Cat8.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat8.Branch("Jet_Pt", Jet_Pt)
+Cat8.Branch("Jet_Eta", Jet_Eta)
+Cat8.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
+Cat9.Branch("Event_No", Event_No, "Event_No/I")
+Cat9.Branch("Dilep", "TLorentzVector", Dilep)
+Cat9.Branch("Mu1", "TLorentzVector", Mu1)
+Cat9.Branch("Mu2", "TLorentzVector", Mu2)
+Cat9.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat9.Branch("Mu_Pt", Mu_Pt)
+Cat9.Branch("Mu_Eta", Mu_Eta)
+Cat9.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat9.Branch("El_Pt", El_Pt)
+Cat9.Branch("El_Eta", El_Eta)
+Cat9.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat9.Branch("Jet_Pt", Jet_Pt)
+Cat9.Branch("Jet_Eta", Jet_Eta)
+Cat9.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
+Cat10.Branch("Event_No", Event_No, "Event_No/I")
+Cat10.Branch("Dilep", "TLorentzVector", Dilep)
+Cat10.Branch("Mu1", "TLorentzVector", Mu1)
+Cat10.Branch("Mu2", "TLorentzVector", Mu2)
+Cat10.Branch("Nu_Mu", Nu_Mu, "Nu_Mu/I")
+Cat10.Branch("Mu_Pt", Mu_Pt)
+Cat10.Branch("Mu_Eta", Mu_Eta)
+Cat10.Branch("Nu_El", Nu_El, "Nu_El/I")
+Cat10.Branch("El_Pt", El_Pt)
+Cat10.Branch("El_Eta", El_Eta)
+Cat10.Branch("Nu_Jet", Nu_Jet, "Nu_Jet/I")
+Cat10.Branch("Jet_Pt", Jet_Pt)
+Cat10.Branch("Jet_Eta", Jet_Eta)
+Cat10.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
+
 def MuonSelection (Mu_Pt , Mu_Eta, Mu_Iso, Mu_ID):
     if Mu_Pt < 10: return False 
     if abs(Mu_Eta) > 2.4: return False 
     if Mu_Iso > 0.25: return False
-    if not Mu_ID : return False 
+    if not Mu_ID: return False 
     return True
 
-def ElecSelection (Elec_Pt, Elec_Eta, Elec_Iso):
+def ElecSelection (Elec_Pt, Elec_Eta, Elec_Iso, Elec_ID):
     if Elec_Pt < 10: return False   
     if abs(Elec_Eta) > 2.5: return False 
     if Elec_Iso > 0.15: return False 
+    if Elec_ID < 3: return False 
     return True
 
 def JetSelection (Jet_Pt, Jet_Eta):
@@ -130,7 +228,7 @@ def JetSelection (Jet_Pt, Jet_Eta):
 
 def BtaggedSelection (Jet_Pt, Jet_Eta, Jet_CSVV2):
     if Jet_Pt < 20: return False 
-    if Jet_Eta > 2.4: return False 
+    if abs(Jet_Eta) > 2.4: return False 
     if Jet_CSVV2 < 0.848: return False 
     return True 
 
@@ -144,11 +242,10 @@ NanoFiles = NanoFiles + glob.glob(filelist1)
 for i,Nfile in enumerate(NanoFiles):
     CurFile = TFile(Nfile)
     Tree = CurFile.Get("Events")
-    if i == 100:
+    if i == 10:
         break
+    print "File number: " , i
     for ive, event in enumerate(Tree):
-        if ive % 1000 == 0:
-            print " LOADING " 
     ### Clear Vectors ### 
         Mu_Pt.clear()
         Mu_Eta.clear()
@@ -187,7 +284,7 @@ for i,Nfile in enumerate(NanoFiles):
         ### Election Selection ###  
         if event.nElectron > 0:
             for k in range(event.nElectron):
-                if ElecSelection(event.Electron_pt[k], event.Electron_eta[k], event.Electron_miniPFRelIso_all[k]):
+                if ElecSelection(event.Electron_pt[k], event.Electron_eta[k], event.Electron_miniPFRelIso_all[k], event.Electron_cutBased[k]):
                     El_Pt.push_back(event.Electron_pt[k])
                     El_Eta.push_back(event.Electron_eta[k])
                     NuEl += 1 
@@ -202,7 +299,7 @@ for i,Nfile in enumerate(NanoFiles):
                     Jet_CSVV2.push_back(event.Jet_btagCSVV2[j])
                     NuJet += 1
             Nu_Jet[0] = NuJet
-
+            
         ## B-Tagged Jet Selection ###
             for l in xrange(NuJet):
                 if BtaggedSelection(Jet_Pt[l], Jet_Eta[l], Jet_CSVV2[l]):
@@ -210,6 +307,14 @@ for i,Nfile in enumerate(NanoFiles):
                 Nu_BJet[0] = NuBJet    
 
       ### Event Selection ############################################################################################################################
+        ### Muon Triggers ###
+        if not event.HLT_IsoMu24 and not event.HLT_IsoTkMu24:
+            continue   
+        
+        ### Primary Vertex ### 
+
+        if event.PV_npvs == 0:
+            continue 
         ### Muon With Opp Charge ###
         Charge = False
         for i in xrange(NuMu):   
@@ -223,40 +328,69 @@ for i,Nfile in enumerate(NanoFiles):
 
         Dilep_ = Mu1 + Mu2 
         Dilep.SetPtEtaPhiM(Dilep_.Pt(),Dilep_.Eta(),Dilep_.Phi(),Dilep_.M())
-        ### Muon Trigger Matching ###
-      #  if not event.HLT_IsoMu24:
-      #      continue 
-      #  TrigMatching = False  
-      #  if Mu1.Pt() > 26 &&     
-      #  if TrigMatching == False:
-      #      continue 
 
       ### CATEGORY ####################################################################################################################################  
-        ### Category 1: 1 Electron ### 
-        if Nu_El == 1:
-            if Nu_Mu > 2:
-                continue 
-            else:
-                Cat1.Fill()
-        ### Category 2: 2 Electrons ###    
-        if Nu_El == 2:
-            if Nu_Mu > 2:
-                continue 
-            else:
-                Cat2.Fill()
+        
+        ### CAT 1 1-BJet ###
+        if NuBJet == 1: 
+            ### Category 1: 1 Electron ### 
+            if NuEl == 1:
+                if NuMu > 2:
+                    continue 
+                else:
+                    Cat1.Fill()
+            ### Category 2: 2 Electrons ###    
+            if NuEl == 2:
+                if NuMu > 2:
+                    continue 
+                else:
+                    Cat2.Fill()
 
-        ### Category 3: 3 Muons ###
-        if Nu_Mu == 3:     
-            if Nu_El > 0:
-                continue
-            else:
-                Cat3.Fill()
-        ### Category 3: 4 Muons ###
-        if Nu_Mu == 4:    
-            if Nu_El > 0:
-                continue 
-            else:
-                Cat4.Fill()
+            ### Category 3: 3 Muons ###
+            if NuMu == 3:     
+                if NuEl > 0:
+                    continue
+                else:
+                    Cat3.Fill()
+            ### Category 3: 4 Muons ###
+            if NuMu == 4:    
+                if NuEl > 0:
+                    continue 
+                else:
+                    Cat4.Fill()
+            if NuJet - NuBJet == 4:
+                Cat5.Fill()
+
+        ### CAT 2 2-BJet ###
+        if NuBJet == 2: 
+            ### Category 1: 1 Electron ### 
+            if NuEl == 1:
+                if NuMu > 2:
+                    continue 
+                else:
+                    Cat6.Fill()
+            ### Category 2: 2 Electrons ###    
+            if NuEl == 2:
+                if NuMu > 2:
+                    continue 
+                else:
+                    Cat7.Fill()
+
+            ### Category 3: 3 Muons ###
+            if NuMu == 3:     
+                if NuEl > 0:
+                    continue
+                else:
+                    Cat8.Fill()
+            ### Category 3: 4 Muons ###
+            if NuMu == 4:    
+                if NuEl > 0:
+                    continue 
+                else:
+                    Cat9.Fill()
+            ### Category 
+            if NuJet - NuBJet == 4:
+                Cat10.Fill()
 
         Event_No = 1             
         ALL.Fill()    
