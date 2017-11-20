@@ -3,7 +3,17 @@ from ROOT import *
 from array import array
 
 ### Make TTREE ### 
-f = ROOT.TFile("SingleD.root", "recreate")
+FileArg = sys.argv
+print FileArg
+tempdir = FileArg[1]
+Dirname = "/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatAnalyzer/test/Nano_AOD/Results/%s/"%tempdir 
+if not os.path.isdir(Dirname):
+    os.makedirs(Dirname)
+
+temp = FileArg[2].split('/').pop()
+cattree = Dirname+temp
+print cattree
+f = ROOT.TFile(cattree, "recreate")
 ALL = ROOT.TTree("nEvent", "nEvent")
 Cat1 = ROOT.TTree("Cat1", "Cat1")
 Cat2 = ROOT.TTree("Cat2", "Cat2")
@@ -233,33 +243,36 @@ def BtaggedSelection (Jet_Pt, Jet_Eta, Jet_CSVV2):
     if Jet_CSVV2 < 0.848: return False 
     return True 
 
-
+#if type(arg)==String:
+#if type(arg)==array.array:
 ### Open Root File ###
-filelist = [#"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016B-18Apr2017_ver2-v1/171112_160845/0000/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016B-18Apr2017_ver2-v1/171112_160845/0001/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016C-18Apr2017-v1/171112_161105/0000/run2_2016RD_NANO*",
-            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016D-18Apr2017-v1/171112_161322/0000/run2_2016RD_NANO*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016E-18Apr2017-v1/171112_161612/0000/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016F-18Apr2017-v2/171112_161842/0000/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016G-18Apr2017-v1/171112_162118/0000/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016G-18Apr2017-v1/171112_162118/0001/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016H-18Apr2017-v1/171112_162332/0000/run2_2016RD_NANO_*",
-            #"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016H-18Apr2017-v1/171112_162332/0001/run2_2016RD_NANO_*"
-            ]
-NanoFiles = []       
-for i, Nfile in enumerate(filelist):            
-    NanoFiles = NanoFiles + glob.glob(Nfile)
+#filelist = [#"/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016B-18Apr2017_ver2-v1/171112_160845/0000/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016B-18Apr2017_ver2-v1/171112_160845/0001/run2_2016RD_NANO_*",
+#            "root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016C-18Apr2017-v1/171112_161105/0000/run2_2016RD_NANO*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016D-18Apr2017-v1/171112_161322/0000/run2_2016RD_NANO*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016E-18Apr2017-v1/171112_161612/0000/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016F-18Apr2017-v2/171112_161842/0000/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016G-18Apr2017-v1/171112_162118/0000/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016G-18Apr2017-v1/171112_162118/0001/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016H-18Apr2017-v1/171112_162332/0000/run2_2016RD_NANO_*",
+#            "/xrootd/store/group/nanoAOD/SingleMuon/run2_2016RD_NANO_Run2016H-18Apr2017-v1/171112_162332/0001/run2_2016RD_NANO_*"
+#            ]
+#NanoFiles = []       
+#for i, Nfile in enumerate(filelist):            
+#    NanoFiles = NanoFiles + glob.glob(Nfile)
+#    print NanoFiles
 
-for i,Nfile in enumerate(NanoFiles):
-    if i == 1: 
-        break
-    CurFile = TFile(Nfile)
+#print str(FileArg[1])
+#a = TFile(str(FileArg[1]))
+#print a
+
+for i,Nfile in enumerate(FileArg[2:]):
+#for i,Nfile in enumerate(NanoFiles):
+    CurFile = TNetXNGFile(Nfile)
     Tree = CurFile.Get("Events")
-    print "File number: " , i
+    
     for ive, event in enumerate(Tree):
     ### Clear Vectors ### 
-        if ive == 300:
-            break
         Mu_Pt.clear()
         Mu_Eta.clear()
         Mu_Charge.clear()
@@ -414,4 +427,3 @@ for i,Nfile in enumerate(NanoFiles):
 
 f.Write()
 f.Close()
-
