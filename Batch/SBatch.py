@@ -16,7 +16,7 @@ RunFiles = [
 #              'WPlusH_HToMuMu',
 #              'ZH_HToMuMu',
 #              'VBF_HToMuMu',
-#              'GG_HToMuMu',
+              'GG_HToMuMu',
 #              "WWTo2L2Nu",
 #              "WZTo3LNu_amcatnlo",
 #              "WZTo2L2Q",
@@ -36,20 +36,20 @@ RunFiles = [
 #              "TTJets_DiLept",
 #              "TTJets_DiLept_Tune4",
 #              'TTJets_aMC', 
-#              'DYJets',
+#               'DYJets',
 #              'DYJets_MG_10to50',
 #              'DYJets_MG2',
 #              'DYJets_2J',
 #              'DYJets_1J',
 #              'DYJets_0J',
 #              'DYJets_10to50', 
-        #      'SingleMuon2_Run2016B',
-              'SingleMuon2_Run2016C',
-        #      'SingleMuon2_Run2016D',
-        #      'SingleMuon2_Run2016E',
-        #      'SingleMuon2_Run2016F',
-        #      'SingleMuon2_Run2016G',
-        #      'SingleMuon2_Run2016H',
+           #   'SingleMuon2_Run2016B',
+           #   'SingleMuon2_Run2016C',
+           #   'SingleMuon2_Run2016D',
+           #   'SingleMuon2_Run2016E',
+           #   'SingleMuon2_Run2016F',
+           #   'SingleMuon2_Run2016G',
+           #   'SingleMuon2_Run2016H',
             #  'SingleMuon_Run2016B',
             #  'SingleMuon_Run2016C',
             #  'SingleMuon_Run2016D',
@@ -83,9 +83,8 @@ for i in RunFiles:
         FileNames = files[begin:end]
         FileNamesStr = " ".join(str(i) for i in FileNames)
         #jobName = analysis+'_'+datasetName
-        subBatch = "condor_submit -append 'arguments=%s %s' tth2mu_cfg.jds" %(datasetName,FileNamesStr)
+        subBatch = "condor_submit -batch-name %s  -append 'arguments=%s %s' tth2mu_cfg.jds" %(datasetName ,datasetName,FileNamesStr)
         #print createbatch
         print subBatch 
             
         os.system(subBatch)
-        break
