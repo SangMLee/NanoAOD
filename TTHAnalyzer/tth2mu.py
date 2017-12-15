@@ -8,9 +8,9 @@ roc = ROOT.std.string("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatA
 rocCor = ROOT.RoccoR(roc)
 
 ### Pileup Weight ###
-ROOT.gROOT.ProcessLine("../helpers/WeightCalculatorFromHistogram.cc+"
-pufile_mc="../Data/pileup/pileup_profile_Spring16.root"
-pufile_data="../Data/pileup/PileupData_GoldenJSON_Full2016.root"
+ROOT.gROOT.ProcessLine("../NanoAOD/helpers/WeightCalculatorFromHistogram.cc+"
+pufile_mc="../NanoAOD/Data/pileup/pileup_profile_Spring16.root"
+pufile_data="../NanoAOD/Data/pileup/PileupData_GoldenJSON_Full2016.root"
 
 hist_mc = ROOT.TFile.Open(profile_mc).Get(hname)
 hist_data = ROOT.TFile.Open(profile_data).Get(hname)
@@ -20,7 +20,7 @@ puWeight = ROOT.WeightCalculatorFromHistogram(hist_mc, hist_data, True, True, Fa
 FileArg = sys.argv
 print FileArg
 tempdir = FileArg[1]
-Dirname = "/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatAnalyzer/test/Nano_AOD/Results/%s/"%tempdir 
+Dirname = "/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/Nano_AOD/Results/Nano_PU/%s/"%tempdir
 if not os.path.isdir(Dirname):
     os.makedirs(Dirname)
 
@@ -72,10 +72,10 @@ Nu_Jet = array("i",[0])
 Nu_BJet = array("i",[0])
 Nu_NonBJet = array("i",[0])
 genweight = array("f",[0])
-
 puweight = array("f",[0])
 
 Event_Tot = ROOT.TH1D("Event_total", "Event_total" ,1,0,1)
+genweights = ROOT.TH1D("genweight", "genweight" , 1,0,1)
 
 ### Branches ###
 ALL.Branch("Event_No", Event_No, "Event_No/I")
@@ -386,15 +386,16 @@ for i,Nfile in enumerate(FileArg[2:]):
         NuJet = 0
         NuBJet = 0
         
-        ### Weights ###
-        if "Run" not in FileArg[1]:
-            genweight[0] = event.genWeight 
-
         ### puWeight ###
         if hasattr(event,"Pileup_nTrueInt"):
             nvtx = int(getattr(event,"Pileup_nTrueInt"))
-            puweight = puWeight.getWeight("Pileup_nTrueInt") if nvtx < hist_mc.GetNbinsX() else 1
-        else: puweight = 1
+            puweight[0] = puWeight.getWeight("Pileup_nTrueInt") if nvtx < hist_mc.GetNbinsX() else 1
+        else: puweight[0] = 1
+
+        ### Weights ###
+        if "Run" not in FileArg[1]:
+            genweight[0] = event.genWeight 
+            genweights.Fill(0.5, genweight[0])
 
         ### Generated Lepton ###
             for i in range(event.nGenDressedLepton): 
