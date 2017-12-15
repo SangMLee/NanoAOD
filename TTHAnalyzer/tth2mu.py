@@ -7,6 +7,15 @@ ROOT.gROOT.LoadMacro("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatAn
 roc = ROOT.std.string("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatAnalyzer/data/rcdata.2016.v3/")
 rocCor = ROOT.RoccoR(roc)
 
+### Pileup Weight ###
+ROOT.gROOT.ProcessLine("../helpers/WeightCalculatorFromHistogram.cc+"
+pufile_mc="../Data/pileup/pileup_profile_Spring16.root"
+pufile_data="../Data/pileup/PileupData_GoldenJSON_Full2016.root"
+
+hist_mc = ROOT.TFile.Open(profile_mc).Get(hname)
+hist_data = ROOT.TFile.Open(profile_data).Get(hname)
+puWeight = ROOT.WeightCalculatorFromHistogram(hist_mc, hist_data, True, True, False)
+
 ### Make TTREE ### 
 FileArg = sys.argv
 print FileArg
@@ -64,6 +73,8 @@ Nu_BJet = array("i",[0])
 Nu_NonBJet = array("i",[0])
 genweight = array("f",[0])
 
+puweight = array("f",[0])
+
 Event_Tot = ROOT.TH1D("Event_total", "Event_total" ,1,0,1)
 
 ### Branches ###
@@ -82,6 +93,7 @@ ALL.Branch("Jet_Pt", Jet_Pt)
 ALL.Branch("Jet_Eta", Jet_Eta)
 ALL.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 ALL.Branch("genweight", genweight, "genweight/F")
+ALL.Branch("puweight", puweight, "puweight/F")
 
 Cat1.Branch("Event_No", Event_No, "Event_No/I")
 Cat1.Branch("Dilep", "TLorentzVector", Dilep)
@@ -98,6 +110,7 @@ Cat1.Branch("Jet_Pt", Jet_Pt)
 Cat1.Branch("Jet_Eta", Jet_Eta)
 Cat1.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat1.Branch("genweight", genweight, "genweight/F")
+Cat1.Branch("puweight", puweight, "puweight/F")
 
 Cat2.Branch("Event_No", Event_No, "Event_No/I")
 Cat2.Branch("Dilep", "TLorentzVector", Dilep)
@@ -114,6 +127,7 @@ Cat2.Branch("Jet_Pt", Jet_Pt)
 Cat2.Branch("Jet_Eta", Jet_Eta)
 Cat2.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat2.Branch("genweight", genweight, "genweight/F")
+Cat2.Branch("puweight", puweight, "puweight/F")
 
 Cat3.Branch("Event_No", Event_No, "Event_No/I")
 Cat3.Branch("Dilep", "TLorentzVector", Dilep)
@@ -130,6 +144,7 @@ Cat3.Branch("Jet_Pt", Jet_Pt)
 Cat3.Branch("Jet_Eta", Jet_Eta)
 Cat3.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat3.Branch("genweight", genweight, "genweight/F")
+Cat3.Branch("puweight", puweight, "puweight/F")
 
 Cat4.Branch("Event_No", Event_No, "Event_No/I")
 Cat4.Branch("Dilep", "TLorentzVector", Dilep)
@@ -146,6 +161,7 @@ Cat4.Branch("Jet_Pt", Jet_Pt)
 Cat4.Branch("Jet_Eta", Jet_Eta)
 Cat4.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat4.Branch("genweight", genweight, "genweight/F")
+Cat4.Branch("puweight", puweight, "puweight/F")
 
 Cat5.Branch("Event_No", Event_No, "Event_No/I")
 Cat5.Branch("Dilep", "TLorentzVector", Dilep)
@@ -162,6 +178,7 @@ Cat5.Branch("Jet_Pt", Jet_Pt)
 Cat5.Branch("Jet_Eta", Jet_Eta)
 Cat5.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat5.Branch("genweight", genweight, "genweight/F")
+Cat5.Branch("puweight", puweight, "puweight/F")
 
 Cat6.Branch("Event_No", Event_No, "Event_No/I")
 Cat6.Branch("Dilep", "TLorentzVector", Dilep)
@@ -178,6 +195,7 @@ Cat6.Branch("Jet_Pt", Jet_Pt)
 Cat6.Branch("Jet_Eta", Jet_Eta)
 Cat6.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat6.Branch("genweight", genweight, "genweight/F")
+Cat6.Branch("puweight", puweight, "puweight/F")
 
 Cat7.Branch("Event_No", Event_No, "Event_No/I")
 Cat7.Branch("Dilep", "TLorentzVector", Dilep)
@@ -194,6 +212,7 @@ Cat7.Branch("Jet_Pt", Jet_Pt)
 Cat7.Branch("Jet_Eta", Jet_Eta)
 Cat7.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat7.Branch("genweight", genweight, "genweight/F")
+Cat7.Branch("puweight", puweight, "puweight/F")
 
 Cat8.Branch("Event_No", Event_No, "Event_No/I")
 Cat8.Branch("Dilep", "TLorentzVector", Dilep)
@@ -210,6 +229,7 @@ Cat8.Branch("Jet_Pt", Jet_Pt)
 Cat8.Branch("Jet_Eta", Jet_Eta)
 Cat8.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat8.Branch("genweight", genweight, "genweight/F")
+Cat8.Branch("puweight", puweight, "puweight/F")
 
 Cat9.Branch("Event_No", Event_No, "Event_No/I")
 Cat9.Branch("Dilep", "TLorentzVector", Dilep)
@@ -226,6 +246,7 @@ Cat9.Branch("Jet_Pt", Jet_Pt)
 Cat9.Branch("Jet_Eta", Jet_Eta)
 Cat9.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat9.Branch("genweight", genweight, "genweight/F")
+Cat9.Branch("puweight", puweight, "puweight/F")
 
 Cat10.Branch("Event_No", Event_No, "Event_No/I")
 Cat10.Branch("Dilep", "TLorentzVector", Dilep)
@@ -242,6 +263,7 @@ Cat10.Branch("Jet_Pt", Jet_Pt)
 Cat10.Branch("Jet_Eta", Jet_Eta)
 Cat10.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat10.Branch("genweight", genweight, "genweight/F")
+Cat10.Branch("puweight", puweight, "puweight/F")
 
 def MuScaleFactor (mu_charge, mu_pt, mu_eta, mu_phi, nTrack):
     scaleFactor = 1.0
@@ -367,6 +389,12 @@ for i,Nfile in enumerate(FileArg[2:]):
         ### Weights ###
         if "Run" not in FileArg[1]:
             genweight[0] = event.genWeight 
+
+        ### puWeight ###
+        if hasattr(event,"Pileup_nTrueInt"):
+            nvtx = int(getattr(event,"Pileup_nTrueInt"))
+            puweight = puWeight.getWeight("Pileup_nTrueInt") if nvtx < hist_mc.GetNbinsX() else 1
+        else: puweight = 1
 
         ### Generated Lepton ###
             for i in range(event.nGenDressedLepton): 
