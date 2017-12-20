@@ -1,4 +1,4 @@
-import ROOT, os, getopt, sys, array, math, glob
+import ROOT, os, getopt, sys, array, math, glob, json
 from ROOT import * 
 from array import array
 
@@ -8,19 +8,23 @@ roc = ROOT.std.string("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/CATTools/CatA
 rocCor = ROOT.RoccoR(roc)
 
 ### Pileup Weight ###
-ROOT.gROOT.ProcessLine("../NanoAOD/helpers/WeightCalculatorFromHistogram.cc+"
-pufile_mc="../NanoAOD/Data/pileup/pileup_profile_Spring16.root"
-pufile_data="../NanoAOD/Data/pileup/PileupData_GoldenJSON_Full2016.root"
+ROOT.gROOT.LoadMacro("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/nanoAOD/scripts/WeightCalculatorFromHistogram.cc+")
+pufile_mc="/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/nanoAOD/Data/pileup/pileup_profile_Spring16.root"
+fmc = ROOT.TFile(pufile_mc)
+pufile_data="/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/nanoAOD/Data/pileup/PileupData_GoldenJSON_Full2016.root"
+fmcrd = ROOT.TFile(pufile_data)
 
-hist_mc = ROOT.TFile.Open(profile_mc).Get(hname)
-hist_data = ROOT.TFile.Open(profile_data).Get(hname)
+hist_mc = fmc.Get("pu_mc")
+hist_mc.SetDirectory(0)
+
+hist_data = fmcrd.Get("pileup")
+hist_data.SetDirectory(0)
 puWeight = ROOT.WeightCalculatorFromHistogram(hist_mc, hist_data, True, True, False)
 
 ### Make TTREE ### 
 FileArg = sys.argv
-print FileArg
 tempdir = FileArg[1]
-Dirname = "/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/Nano_AOD/Results/Nano_PU/%s/"%tempdir
+Dirname = "/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/Nano_AOD/Results/Nano_Masked2/%s/"%tempdir
 if not os.path.isdir(Dirname):
     os.makedirs(Dirname)
 
@@ -73,9 +77,12 @@ Nu_BJet = array("i",[0])
 Nu_NonBJet = array("i",[0])
 genweight = array("f",[0])
 puweight = array("f",[0])
+b_weight = array("f",[0])
+GJson = array("f",[0])
 
 Event_Tot = ROOT.TH1D("Event_total", "Event_total" ,1,0,1)
 genweights = ROOT.TH1D("genweight", "genweight" , 1,0,1)
+weight = ROOT.TH1D("weight", "weight", 1,0,1)
 
 ### Branches ###
 ALL.Branch("Event_No", Event_No, "Event_No/I")
@@ -265,6 +272,19 @@ Cat10.Branch("Nu_BJet", Nu_BJet, "Nu_BJet/I")
 Cat10.Branch("genweight", genweight, "genweight/F")
 Cat10.Branch("puweight", puweight, "puweight/F")
 
+def LumiCheck(event):
+    run = str(event.run)
+    if run in json_hold:
+        for i in range(len(Gfile[run])):
+            start = Gfile[run][i][0]
+            end = Gfile[run][i][1]
+            for k in range(start, end+1):
+                if k == event.luminosityBlock:
+                    return True         
+        return False
+    else:
+        return False
+
 def MuScaleFactor (mu_charge, mu_pt, mu_eta, mu_phi, nTrack):
     scaleFactor = 1.0
     u1 = ROOT.gRandom.Rndm()
@@ -281,7 +301,11 @@ def MuScaleFactor (mu_charge, mu_pt, mu_eta, mu_phi, nTrack):
     
     return scaleFactor 
 
-def MuonSelection (mu_pt , mu_eta, mu_phi, mu_m, mu_iso, mu_charge, mu_id, nTrack):
+def MuonSelection (mu_pt , mu_eta, mu_phi, mu_m, mu_iso, mu_charge, mu_id, nTrack, Tracker, Global):
+    if not Tracker: return False 
+    if not Global: return False 
+    if not mu_id: return False 
+
     m = ROOT.TLorentzVector()
     mu = ROOT.TLorentzVector()
     m.SetPtEtaPhiM(mu_pt, mu_eta, mu_phi, mu_m)
@@ -290,7 +314,6 @@ def MuonSelection (mu_pt , mu_eta, mu_phi, mu_m, mu_iso, mu_charge, mu_id, nTrac
     if mu.Pt() < 20: return False 
     if abs(mu.Eta()) > 2.4: return False 
     if mu_iso > 0.25: return False
-    if not mu_id: return False 
     Mu_Pt.push_back(mu.Pt())
     Mu_Eta.push_back(mu.Eta())
     Mu_Charge.push_back(mu_charge)
@@ -352,12 +375,17 @@ def BtaggedSelection (Jet_Pt, Jet_Eta, Jet_CSVV2):
 #for i, Nfile in enumerate(filelist):            
 #    NanoFiles = NanoFiles + glob.glob(Nfile)
 #    print NanoFiles
+GJsonF = open("/cms/scratch/daniel/CMSSW_8_0_26_patch1/src/Nano_AOD/GoldenJson.txt")
+Gfile = json.load(GJsonF)
+GJsonF.seek(0)
+json_hold = GJsonF.read()
 
 for i,Nfile in enumerate(FileArg[2:]):
 #for i,Nfile in enumerate(NanoFiles):
+#    print "File name: " , Nfile 
     CurFile = TNetXNGFile(Nfile)
     Tree = CurFile.Get("Events")
-    
+#    print Tree.GetEntries()
     for ive, event in enumerate(Tree):
     ### Clear Vectors ### 
         Mu_Pt.clear()
@@ -376,11 +404,14 @@ for i,Nfile in enumerate(FileArg[2:]):
         Jet_Phi.clear()
         
     ### Start Event Loop ###
-                  
+      ### Check Lumi ### 
+        if "Run" in FileArg[1]:
+            if not LumiCheck(event):
+                continue
       ### Object Selection ########################################################################################################################
         ### Muon Selection ### 
         Event_Total[0] = 1
-        Event_Tot.Fill(Event_Total[0])
+        Event_Tot.Fill(0.5, Event_Total[0])
         NuMu = 0
         NuEl = 0
         NuJet = 0
@@ -389,14 +420,15 @@ for i,Nfile in enumerate(FileArg[2:]):
         ### puWeight ###
         if hasattr(event,"Pileup_nTrueInt"):
             nvtx = int(getattr(event,"Pileup_nTrueInt"))
-            puweight[0] = puWeight.getWeight("Pileup_nTrueInt") if nvtx < hist_mc.GetNbinsX() else 1
+            puweight[0] = puWeight.getWeight(nvtx) if nvtx < hist_mc.GetNbinsX() else 1
         else: puweight[0] = 1
 
         ### Weights ###
         if "Run" not in FileArg[1]:
             genweight[0] = event.genWeight 
             genweights.Fill(0.5, genweight[0])
-
+            b_weight[0] = genweight[0] * puweight[0]
+            weight.Fill(0.5, b_weight[0])
         ### Generated Lepton ###
             for i in range(event.nGenDressedLepton): 
                 if abs(event.GenDressedLepton_pdgId[i]) != 13 : 
@@ -418,7 +450,7 @@ for i,Nfile in enumerate(FileArg[2:]):
         ### Muon Selection ###        
         if event.nMuon > 0:
             for i in range(event.nMuon):
-                if MuonSelection(event.Muon_pt[i], event.Muon_eta[i], event.Muon_phi[i], event.Muon_mass[i], event.Muon_pfRelIso04_all[i], event.Muon_charge[i], event.Muon_mediumId[i], event.Muon_nTrackerLayers[i]):
+                if MuonSelection(event.Muon_pt[i], event.Muon_eta[i], event.Muon_phi[i], event.Muon_mass[i], event.Muon_pfRelIso04_all[i], event.Muon_charge[i], event.Muon_mediumId[i], event.Muon_nTrackerLayers[i], event.Muon_trackerMu[i], event.Muon_globalMu[i]):
                     NuMu += 1
                 Nu_Mu[0] = NuMu    
         if Nu_Mu < 2:
@@ -545,7 +577,7 @@ for i,Nfile in enumerate(FileArg[2:]):
 
         Event_No[0] = 1             
         ALL.Fill()    
-      
 
 f.Write()
 f.Close()
+GJsonF.close()

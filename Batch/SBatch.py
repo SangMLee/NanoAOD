@@ -12,61 +12,54 @@ analysis = 'tth2mu'
 pythonCfg = 'tth2mu.py'
 #analysis=analysis+'Silver'
 RunFiles = [
-#              'WMinusH_HToMuMu',
-#              'WPlusH_HToMuMu',
-#              'ZH_HToMuMu',
-#              'VBF_HToMuMu',
+              'WMinusH_HToMuMu',
+              'WPlusH_HToMuMu',
+              'ZH_HToMuMu',
+              'VBF_HToMuMu',
               'GG_HToMuMu',
-#              "WWTo2L2Nu",
-#              "WZTo3LNu_amcatnlo",
-#              "WZTo2L2Q",
-#              "ZZTo2L2Nu",
-#              "ZZTo2L2Q",
-#              "ZZTo4L",
-#              "WWW",
-#              "WWZ",
-#              "WZZ",
-#              "ZZZ",
+              "WWTo2L2Nu",
+              "WZTo3LNu_amcatnlo",
+              "WZTo2LQQ",
+              "ZZTo2L2Nu",
+              "ZZTo2L2Q",
+              "ZZTo4L",
+              "WWW",
+              "WWZ",
+              "WZZ",
+              "ZZZ",
 #              "ttZToLLNuNu",
 #              "ttWToLNu",
-#              "SingleTop_tW_noHadron",
-#              "SingleTbar_tW_noHadron",
-#              "SingleTop_tW",
-#              "SingleTbar_tW",
+              "SingleTop_tW_noHadron",
+              "SingleTbar_tW_noHadron",
+              "SingleTop_tW",
+              "SingleTbar_tW",
 #              "TTJets_DiLept",
 #              "TTJets_DiLept_Tune4",
-#              'TTJets_aMC', 
-#               'DYJets',
+              'TTJets_aMC', 
+              'DYJets',
 #              'DYJets_MG_10to50',
 #              'DYJets_MG2',
 #              'DYJets_2J',
 #              'DYJets_1J',
 #              'DYJets_0J',
 #              'DYJets_10to50', 
-           #   'SingleMuon2_Run2016B',
-           #   'SingleMuon2_Run2016C',
-           #   'SingleMuon2_Run2016D',
-           #   'SingleMuon2_Run2016E',
-           #   'SingleMuon2_Run2016F',
-           #   'SingleMuon2_Run2016G',
-           #   'SingleMuon2_Run2016H',
-            #  'SingleMuon_Run2016B',
-            #  'SingleMuon_Run2016C',
-            #  'SingleMuon_Run2016D',
-            #  'SingleMuon_Run2016E',
-            #  'SingleMuon_Run2016F',
-            #  'SingleMuon_Run2016G',
-            #  'SingleMuon_Run2016H_v2',
+              'SingleMuon_Run2016B',
+              'SingleMuon_Run2016C',
+              'SingleMuon_Run2016D',
+              'SingleMuon_Run2016E',
+              'SingleMuon_Run2016F',
+              'SingleMuon_Run2016G',
+              'SingleMuon_Run2016H',
             #  'SingleMuon_Run2016H_v3',
               ]
-datadir = os.environ["CMSSW_BASE"]+'/src/CATTools/CatAnalyzer/test/Nano_AOD/Data/'
+datadir = os.environ["CMSSW_BASE"]+'/nano/nanoAOD/data/dataset/'
 #version = os.environ["CMSSW_VERSION"]
 
 
-
+count = 0
 for i in RunFiles:
     datasetName = i
-    fileList = datadir + datasetName + '.txt'
+    fileList = datadir + 'dataset_' + datasetName + '.txt'
     files = np.array([])
     for f in open(fileList).readlines():
         f = f.strip()
@@ -83,7 +76,7 @@ for i in RunFiles:
         FileNames = files[begin:end]
         FileNamesStr = " ".join(str(i) for i in FileNames)
         #jobName = analysis+'_'+datasetName
-        subBatch = "condor_submit -batch-name %s  -append 'arguments=%s %s' tth2mu_cfg.jds" %(datasetName ,datasetName,FileNamesStr)
+        subBatch = "condor_submit -batch-name %s -append 'arguments=%s %s' tth2mu_cfg.jds" %(datasetName ,datasetName,FileNamesStr)
         #print createbatch
         print subBatch 
             
